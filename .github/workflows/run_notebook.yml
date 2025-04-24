@@ -18,13 +18,18 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Install dependencies
+      - name: Install dependencies & register kernel
         run: |
-          pip install papermill
+          pip install papermill ipykernel jupyter-client
+          # Registrar el kernel con nombre "python3"
+          python -m ipykernel install --user --name python3 --display-name python3
 
       - name: Ejecutar notebook con papermill
         run: |
-          papermill RPA_ECOM_Cron.ipynb output.ipynb
+          papermill \
+            --kernel python3 \
+            RPA_ECOM_Cron.ipynb \
+            output.ipynb
 
       - name: Debug - Verificar notebook output
         run: |

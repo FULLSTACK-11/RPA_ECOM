@@ -2,7 +2,7 @@ name: Ejecutar RPA_ECOM_Cron
 
 on:
   schedule:
-    # Ejecutar todos los días a las 12:15 PM hora Colombia (UTC-5 → 17:15 UTC)
+    # A las 12:15 PM hora Colombia (UTC-5 → 17:15 UTC)
     - cron: '15 17 * * *'
   workflow_dispatch:
 
@@ -27,7 +27,7 @@ jobs:
           papermill RPA_ECOM_Cron.ipynb output.ipynb
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: notebook-output
           path: output.ipynb

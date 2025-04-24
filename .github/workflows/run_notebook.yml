@@ -2,7 +2,6 @@ name: Ejecutar RPA_ECOM_Cron
 
 on:
   schedule:
-    # Ejecutar todos los días a las 12:15 PM hora Colombia (UTC-5 → 17:15 UTC)
     - cron: '15 17 * * *'
   workflow_dispatch:
 
@@ -18,18 +17,17 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Install dependencies & register kernel
+      - name: Install dependencies
         run: |
-          pip install papermill ipykernel jupyter-client
-          # Registrar el kernel con nombre "python3"
-          python -m ipykernel install --user --name python3 --display-name python3
+          pip install papermill jupyter ipykernel
+
+      - name: Debug Jupyter Kernels
+        run: |
+          jupyter kernelspec list
 
       - name: Ejecutar notebook con papermill
         run: |
-          papermill \
-            --kernel python3 \
-            RPA_ECOM_Cron.ipynb \
-            output.ipynb
+          papermill RPA_ECOM_Cron.ipynb output.ipynb -k python3
 
       - name: Debug - Verificar notebook output
         run: |

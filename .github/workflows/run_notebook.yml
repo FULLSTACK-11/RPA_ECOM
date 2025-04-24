@@ -2,7 +2,7 @@ name: Ejecutar RPA_ECOM_Cron
 
 on:
   schedule:
-    # A las 12:15 PM hora Colombia (UTC-5 → 17:15 UTC)
+    # Ejecutar todos los días a las 12:15 PM hora Colombia (UTC-5 → 17:15 UTC)
     - cron: '15 17 * * *'
   workflow_dispatch:
 
@@ -25,20 +25,11 @@ jobs:
       - name: Ejecutar notebook con papermill
         run: |
           papermill RPA_ECOM_Cron.ipynb output.ipynb
-    
-      - name: Debug - Verificar si output.ipynb existe
+
+      - name: Debug - Verificar notebook output
         run: |
-          if [ -f "output.ipynb" ]; then
-            echo "✅ output.ipynb fue generado correctamente."
-            ls -lh output.ipynb
+          if [ -f output.ipynb ]; then
+            echo "✅ output.ipynb existe"
           else
-            echo "❌ output.ipynb no fue encontrado. Revisa el notebook."
-            exit 1
+            echo "❌ output.ipynb NO existe"; exit 1
           fi
-    
-      - name: Subir artefacto de salida
-        uses: actions/upload-artifact@v3
-        with:
-          name: notebook-output
-          path: output.ipynb
-    

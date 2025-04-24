@@ -25,16 +25,20 @@ jobs:
       - name: Ejecutar notebook con papermill
         run: |
           papermill RPA_ECOM_Cron.ipynb output.ipynb
-
-      - name: Verify notebook output exists
+    
+      - name: Debug - Verificar si output.ipynb existe
         run: |
-          if [ ! -f "output.ipynb" ]; then
-            echo "Error: output.ipynb not found!"
+          if [ -f "output.ipynb" ]; then
+            echo "✅ output.ipynb fue generado correctamente."
+            ls -lh output.ipynb
+          else
+            echo "❌ output.ipynb no fue encontrado. Revisa el notebook."
             exit 1
           fi
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v3.1.2
+    
+      - name: Subir artefacto de salida
+        uses: actions/upload-artifact@v3
         with:
           name: notebook-output
           path: output.ipynb
+    

@@ -1,34 +1,32 @@
-# .github/workflows/run_rpa_colab.yml
-
-name: 🕒 Ejecutar RPA_ECOM_Cron.ipynb
+name: Ejecutar RPA_ECOM_Cron
 
 on:
   schedule:
-    # A las 00:00 Colombia (05:00 UTC)
-    - cron: '0 5 * * *'
-    # A las 12:00 Colombia (17:00 UTC)
-    - cron: '0 17 * * *'
+    # Ejecutar todos los días a las 12:15 PM hora Colombia (UTC-5 → 17:15 UTC)
+    - cron: '15 17 * * *'
   workflow_dispatch:
 
 jobs:
   run-notebook:
     runs-on: ubuntu-latest
-
     steps:
-      - name: 📥 Checkout repo
+      - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: 🔧 Instalar Papermill
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
         run: |
           pip install papermill
 
-      - name: 🚀 Ejecutar notebook
+      - name: Ejecutar notebook con papermill
         run: |
-          papermill \
-            RPA_ECOM_Cron.ipynb \
-            output.ipynb
+          papermill RPA_ECOM_Cron.ipynb output.ipynb
 
-      - name: 📁 Guardar resultado
+      - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
           name: notebook-output

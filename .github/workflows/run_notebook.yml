@@ -26,8 +26,15 @@ jobs:
         run: |
           papermill RPA_ECOM_Cron.ipynb output.ipynb
 
+      - name: Verify notebook output exists
+        run: |
+          if [ ! -f "output.ipynb" ]; then
+            echo "Error: output.ipynb not found!"
+            exit 1
+          fi
+
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v3.1.2
         with:
           name: notebook-output
           path: output.ipynb
